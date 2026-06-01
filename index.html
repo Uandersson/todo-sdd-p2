@@ -3,20 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>To-Do List - SDD V1</title>
+    <title>To-Do List - SDD V2</title>
     <style>
-      body { font-family: sans-serif; padding: 20px; max-width: 400px; margin: 0 auto; }
-      .completed { text-decoration: line-through; color: gray; }
+      body { font-family: sans-serif; padding: 20px; max-width: 500px; margin: 0 auto; }
+      .completed span.task-title { text-decoration: line-through; color: gray; }
       ul { list-style-type: none; padding: 0; }
-      li { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+      li { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+      .priority-Alta { color: red; font-weight: bold; font-size: 0.8em; }
+      .priority-Média { color: orange; font-weight: bold; font-size: 0.8em; }
+      .priority-Baixa { color: green; font-weight: bold; font-size: 0.8em; }
+      .filters { margin: 15px 0; padding: 10px; background: #f5f5f5; border-radius: 5px; }
+      .actions { margin-left: auto; display: flex; gap: 5px; }
+      button { cursor: pointer; }
     </style>
   </head>
   <body>
-    <h1>Minhas Tarefas</h1>
+    <h1>Minhas Tarefas (V2)</h1>
     
     <div>
       <input type="text" id="taskInput" placeholder="Nova tarefa..." />
+      <select id="priorityInput">
+        <option value="Baixa">Baixa</option>
+        <option value="Média" selected>Média</option>
+        <option value="Alta">Alta</option>
+      </select>
       <button id="addButton">Adicionar</button>
+    </div>
+
+    <div class="filters">
+      <label>Filtrar: </label>
+      <select id="filterInput">
+        <option value="Todas">Todas</option>
+        <option value="Pendentes">Pendentes</option>
+        <option value="Concluídas">Concluídas</option>
+      </select>
     </div>
 
     <ul id="taskList"></ul>
