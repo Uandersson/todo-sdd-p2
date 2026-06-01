@@ -34,10 +34,26 @@ function renderTasks() {
     checkbox.type = 'checkbox';
     checkbox.checked = task.completed;
     checkbox.addEventListener('change', () => toggleTask(originalIndex));
+
+    const titleContainer = document.createElement('div');
+    titleContainer.className = 'task-title-container';
     
-    const titleSpan = document.createElement('span');
-    titleSpan.textContent = task.title;
-    titleSpan.className = 'task-title';
+    if (task.editing) {
+      const editInput = document.createElement('input');
+      editInput.type = 'text';
+      editInput.value = task.title;
+      editInput.className = 'edit-input';
+      editInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') saveEditedTask(originalIndex, editInput.value);
+        if (e.key === 'Escape') cancelEdit(originalIndex);
+      });
+      titleContainer.appendChild(editInput);
+    } else {
+      const titleSpan = document.createElement('span');
+      titleSpan.textContent = task.title;
+      titleSpan.className = 'task-title';
+      titleContainer.appendChild(titleSpan);
+    }
     
     // Prioridade (Critério 2)
     const prioritySpan = document.createElement('span');
@@ -47,26 +63,60 @@ function renderTasks() {
     const actionsDiv = document.createElement('div');
     actionsDiv.className = 'actions';
 
-    // Editar (Critério 3)
-    const editBtn = document.createElement('button');
-    editBtn.textContent = 'Editar';
-    editBtn.addEventListener('click', () => editTask(originalIndex));
+    if (task.editing) {
+      const saveBtn = document.createElement('button');
+      saveBtn.textContent = 'Salvar';
+      saveBtn.addEventListener('click', () => {
+        const input = li.querySelector('.edit-input');
+        if (input) saveEditedTask(originalIndex, input.value);
+      });
 
-    // Excluir (Critério 4)
-    const deleteBtn = document.createElement('button');
-    deleteBtn.textContent = 'Excluir';
-    deleteBtn.addEventListener('click', () => deleteTask(originalIndex));
+      const cancelBtn = document.createElement('button');
+      cancelBtn.textContent = 'Cancelar';
+      cancelBtn.addEventListener('click', () => cancelEdit(originalIndex));
 
-    actionsDiv.appendChild(editBtn);
-    actionsDiv.appendChild(deleteBtn);
+      actionsDiv.appendChild(saveBtn);
+      actionsDiv.appendChild(cancelBtn);
+    } else {
+      // Editar (Critério 3)
+      const editBtn = document.createElement('button');
+      editBtn.textContent = 'Editar';
+      editBtn.addEventListener('click', () => editTask(originalIndex));
+
+      // Excluir (Critério 4)
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = 'Excluir';
+      deleteBtn.addEventListener('click', () => deleteTask(originalIndex));
+
+      actionsDiv.appendChild(editBtn);
+      actionsDiv.appendChild(deleteBtn);
+    }
 
     li.appendChild(checkbox);
-    li.appendChild(titleSpan);
+    li.appendChild(titleContainer);
     li.appendChild(prioritySpan);
     li.appendChild(actionsDiv);
     
     taskList.appendChild(li);
   });
+}
+
+function saveEditedTask(index, newTitle) {
+  const trimmedTitle = newTitle.trim();
+  if (!trimmedTitle) {
+    alert('O título não pode ficar vazio!');
+    return;
+  }
+
+  tasks[index].title = trimmedTitle;
+  delete tasks[index].editing;
+  saveTasks();
+  renderTasks();
+}
+
+function cancelEdit(index) {
+  delete tasks[index].editing;
+  renderTasks();
 }
 
 // Validação de Campos Obrigatórios (Critério 1)
@@ -100,17 +150,11 @@ function deleteTask(index) {
 
 // Edição (Critério 3)
 function editTask(index) {
-  const newTitle = prompt('Edite o nome da tarefa:', tasks[index].title);
-  if (newTitle !== null) {
-    const trimmedTitle = newTitle.trim();
-    if (trimmedTitle) {
-      tasks[index].title = trimmedTitle;
-      saveTasks();
-      renderTasks();
-    } else {
-      alert('O título não pode ficar vazio!');
-    }
-  }
+  tasks = tasks.map((task, i) => ({
+    ...task,
+    editing: i === index
+  }));
+  renderTasks();
 }
 
 // Listeners de Eventos
