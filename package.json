@@ -1,6 +1,7 @@
 {
   "name": "todo-sdd-p2",
-  "version": "0.0.0",
+  "version": "2.0.0",
+  "description": "To-Do List com Spec-Driven Development (SDD)",
   "private": true,
   "type": "module",
   "scripts": {
