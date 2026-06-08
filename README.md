@@ -2,6 +2,15 @@
 
 Este projeto é uma aplicação de lista de tarefas (To-Do) desenvolvida como parte da avaliação de estruturação e testes guiados por especificação (SDD). O sistema evoluiu de uma versão básica para uma versão completa com filtros, prioridades, persistência local e testes automatizados.
 
+## ✨ Funcionalidades Implementadas (V2)
+
+1. **✅ Validação para impedir tarefas vazias** - Rejeita títulos vazios ou com apenas espaços
+2. **✅ Edição de tarefas existentes** - Modo inline com Enter/Escape para salvar ou cancelar
+3. **✅ Exclusão de tarefas** - Remove permanentemente com botão "Excluir"
+4. **✅ Definição de prioridade** - Categorias Alta (vermelho), Média (laranja), Baixa (verde)
+5. **✅ Filtro de exibição por status** - Visualizar Todas, Pendentes ou Concluídas
+6. **✅ Persistência local dos dados** - localStorage para recuperar dados entre sessões
+
 ## 🚀 Como executar o projeto
 
 1. Certifique-se de ter o [Node.js](https://nodejs.org/) instalado.
